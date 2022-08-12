@@ -35,11 +35,11 @@ Cypress.Commands.add('cadastro', (nome, email, senha, senha_confirmacao) => {
 
  })
 
- Cypress.Commands.add('login', (nome, email) => {
+ Cypress.Commands.add('login', (email, senha) => {
     
     cy.visit('/login')
-    cy.get('[data-test="login-email"] > .MuiInputBase-root > .MuiInputBase-input').type(nome)
-    cy.get('[data-test="login-password"] > .MuiInputBase-root > .MuiInputBase-input').type(email)
+    cy.get('[data-test="login-email"] > .MuiInputBase-root > .MuiInputBase-input').type(email)
+    cy.get('[data-test="login-password"] > .MuiInputBase-root > .MuiInputBase-input').type(senha)
     cy.get('[data-test="login-submit"]').click()
 
  })
@@ -53,5 +53,18 @@ Cypress.Commands.add('cadastro', (nome, email, senha, senha_confirmacao) => {
    cy.get('input[name="location"]').clear().type(cidade +", "+ estadoSigla)
    cy.get('input[name="skills"]').clear().type(randomSkills)
    cy.get('textarea[name="bio"]').clear().type(bio)
-
 })
+
+Cypress.Commands.add('gerarToken', (email, senha) => {
+   cy.request({
+      method: 'POST',
+      url: '/api/auth',
+      body: {
+          "email": email,
+          "password": senha
+      }
+   }).then((response) => {
+      return response.body.jwt
+   })
+})
+
