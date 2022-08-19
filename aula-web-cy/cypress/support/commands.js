@@ -68,3 +68,21 @@ Cypress.Commands.add('gerarToken', (email, senha) => {
    })
 })
 
+Cypress.Commands.add('criarPostagem', (text, token) => {
+   
+   cy.request({
+      method: 'POST',
+      url: '/api/posts',
+      header: {
+          Cookie: token
+      },
+      body: {
+          "text": "Post " + text,
+      }
+  }).then((response) => {
+      expect(response.status).to.be.equal(201)
+      expect(response.body.text).contains(text)   
+      
+      return response.body._id
+  })
+})
