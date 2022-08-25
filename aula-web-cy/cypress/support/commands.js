@@ -27,10 +27,10 @@
 Cypress.Commands.add('cadastro', (nome, email, senha, senha_confirmacao) => {
     
     cy.visit('/cadastrar')
-    cy.get('[data-test="register-name"] > .MuiInputBase-root > .MuiInputBase-input').type(nome)
-    cy.get('[data-test="register-email"] > .MuiInputBase-root > .MuiInputBase-input').type(email)
-    cy.get('[data-test="register-password"] > .MuiInputBase-root > .MuiInputBase-input').type(senha)
-    cy.get('[data-test="register-password2"] > .MuiInputBase-root > .MuiInputBase-input').type(senha_confirmacao)
+    cy.get('[data-test="register-name"]').type(nome)
+    cy.get('[data-test="register-email"]').type(email)
+    cy.get('[data-test="register-password"]').type(senha)
+    cy.get('[data-test="register-password2"]').type(senha_confirmacao)
     cy.get('[data-test="register-submit"]').click()
 
  })
@@ -38,8 +38,8 @@ Cypress.Commands.add('cadastro', (nome, email, senha, senha_confirmacao) => {
  Cypress.Commands.add('login', (email, senha) => {
     
     cy.visit('/login')
-    cy.get('[data-test="login-email"] > .MuiInputBase-root > .MuiInputBase-input').type(email)
-    cy.get('[data-test="login-password"] > .MuiInputBase-root > .MuiInputBase-input').type(senha)
+    cy.get('[data-test="login-email"]').type(email)
+    cy.get('[data-test="login-password"]').type(senha)
     cy.get('[data-test="login-submit"]').click()
 
  })
@@ -65,6 +65,20 @@ Cypress.Commands.add('gerarToken', (email, senha) => {
       }
    }).then((response) => {
       return response.body.jwt
+   })
+})
+
+Cypress.Commands.add('loginApi', (email, senha) => {
+   cy.request({
+      method: 'POST',
+      url: '/api/auth',
+      body: {
+         "email": email,
+         "password": senha
+      }
+   }).then((response) => {
+      //return response.body.jwt
+      cy.setCookie('jwt', response.body.jwt)
    })
 })
 

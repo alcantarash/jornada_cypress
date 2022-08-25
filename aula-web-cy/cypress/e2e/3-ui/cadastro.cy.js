@@ -1,4 +1,6 @@
 /// <reference types="cypress" />
+
+import cadastroPage from '../../support/pages/cadastro.page';
 const faker = require('faker-br');
 
 describe('Funcionalidade: Cadastro', () => {
@@ -39,7 +41,7 @@ beforeEach(() =>{
         
     });
     
-    it.only('Cadastro comando customizado', () => {
+    it('Cadastro comando customizado', () => {
         
         let nome = 'Sheldon ' + faker.name.lastName()
         let email = faker.internet.email(nome)
@@ -52,6 +54,17 @@ beforeEach(() =>{
 
         cy.cadastro(nome, email, 'sheldon', 'sheldon')
         cy.get('[data-test="alert"]').should('contain','Usuário já registrado')
+    });
+
+    it.only('Deve fazer cadastro com sucesso - Usando Pages', () => {
+
+        let nome = 'Sheldon ' + faker.name.lastName()
+        let email = faker.internet.email(nome)
+
+        cadastroPage.cadastro(nome, email, 'sheldon', 'sheldon')
+        
+        cy.get('.large').should('contain', 'Dashboard')
+        cy.contains('Bem-vindo').should('exist')
     });
 
 }); 
