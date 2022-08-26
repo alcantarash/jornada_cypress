@@ -23,6 +23,8 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+const faker = require('faker-br');
+
 
 Cypress.Commands.add('cadastro', (nome, email, senha, senha_confirmacao) => {
     
@@ -53,6 +55,34 @@ Cypress.Commands.add('cadastro', (nome, email, senha, senha_confirmacao) => {
    cy.get('input[name="location"]').clear().type(cidade +", "+ estadoSigla)
    cy.get('input[name="skills"]').clear().type(randomSkills)
    cy.get('textarea[name="bio"]').clear().type(bio)
+})
+
+Cypress.Commands.add('addExperiencia', (posicao, localizacaoCompany, companyNameExp, descExperience) => {
+
+   cy.get('a[href="/adicionar-experiencia"]').click()
+   cy.get('div[data-test="experience-title"]').type(posicao)
+   cy.get('input[name="company"]').type(companyNameExp)
+   cy.get('input[name="location"]').type(localizacaoCompany)
+   cy.get('input[name="current"]').click()
+   cy.get('svg[class="MuiSvgIcon-root"]').eq(0).click()
+   cy.get('p[class="MuiTypography-root MuiTypography-body2 MuiTypography-colorInherit"]').eq(1).click()//Sempre o dia 1º do mês atual
+   cy.get('textarea[name="description"]').type(descExperience)
+   cy.get('input[data-test="experience-submit"]').click()
+   cy.contains(companyNameExp)
+})
+
+Cypress.Commands.add('addFormacaoAcademica', (schoolName, schoolDegree, schoolCourse, descCourse) => {
+   
+   cy.get('a[href="/adicionar-formacao"]').click()
+   cy.get('input[name="school"]').type(schoolName)
+   cy.get('input[name="degree"]').type(schoolDegree)
+   cy.get('input[name="fieldofstudy"]').type(schoolCourse)
+   cy.get('svg[class="MuiSvgIcon-root"]').eq(0).click()
+   cy.get('p[class="MuiTypography-root MuiTypography-body2 MuiTypography-colorInherit"]').eq(1).click()//Sempre o dia 1º do mês atual
+   cy.get('input[name="current"]').click()
+   cy.get('textarea[name="description"]').type(descCourse)
+   cy.get('input[data-test="education-submit"]').click()
+   cy.contains(schoolName)
 })
 
 Cypress.Commands.add('gerarToken', (email, senha) => {
