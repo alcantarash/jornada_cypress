@@ -57,7 +57,12 @@ Cypress.Commands.add('cadastro', (nome, email, senha, senha_confirmacao) => {
    cy.get('textarea[name="bio"]').clear().type(bio)
 })
 
-Cypress.Commands.add('addExperiencia', (posicao, localizacaoCompany, companyNameExp, descExperience) => {
+Cypress.Commands.add('addExperiencia', () => {
+
+   let posicao = faker.name.jobTitle()
+   let localizacaoCompany = faker.address.streetAddress() +", "+ faker.address.city() +", "+ faker.address.stateAbbr()
+   let companyNameExp = faker.company.companyName()
+   let descExperience = faker.name.jobDescriptor()
 
    cy.get('a[href="/adicionar-experiencia"]').click()
    cy.get('div[data-test="experience-title"]').type(posicao)
@@ -71,8 +76,13 @@ Cypress.Commands.add('addExperiencia', (posicao, localizacaoCompany, companyName
    cy.contains(companyNameExp)
 })
 
-Cypress.Commands.add('addFormacaoAcademica', (schoolName, schoolDegree, schoolCourse, descCourse) => {
+Cypress.Commands.add('addFormacaoAcademica', () => {
    
+   let schoolName = faker.lorem.word() +' '+ faker.lorem.word()
+   let schoolDegree = faker.random.hexaDecimal()
+   let schoolCourse = faker.name.jobArea()
+   let descCourse = faker.name.jobDescriptor()
+
    cy.get('a[href="/adicionar-formacao"]').click()
    cy.get('input[name="school"]').type(schoolName)
    cy.get('input[name="degree"]').type(schoolDegree)
